@@ -1,0 +1,61 @@
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://sintaks.com/calculator"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             name="CalculatorService" targetNamespace="http://sintaks.com/calculator">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://sintaks.com/calculator">
+            <xsd:element name="AddRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="num1" type="xsd:int"/>
+                        <xsd:element name="num2" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="AddResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="result" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="AddRequest">
+        <wsdl:part name="parameters" element="tns:AddRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="AddResponse">
+        <wsdl:part name="parameters" element="tns:AddResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="CalculatorPortType">
+        <wsdl:operation name="add">
+            <wsdl:input message="tns:AddRequest"/>
+            <wsdl:output message="tns:AddResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="CalculatorBinding" type="tns:CalculatorPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="add">
+            <soap:operation soapAction="urn:add"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="CalculatorService">
+        <wsdl:port name="CalculatorPort" binding="tns:CalculatorBinding">
+            <soap:address location="http://localhost:8080/ws/calculator"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
